@@ -1,0 +1,66 @@
+{{!
+    @template local_plugindownloader/main
+    @description This template renders the main page of the plugin downloader, listing additional plugins, and providing a form to download selected plugins.
+    @param array additional_plugins Indicates if there are additional plugins.
+    @param array plugins List of additional plugins with their details (name, component).
+    @param string noadditionalplugins Message displayed when there are no additional plugins.
+    @param string downloadaction URL for the download action form.
+    @param string sesskey Security token for the download action form.
+    @param string downloadselected Button text for downloading selected plugins.
+    
+    @example {
+    "additional_plugins": true,
+    "plugins": [
+        {
+        "name": "Example Plugin",
+        "component": "cGx1Z2luX25hbWU6cGx1Z2luX3R5cGU="
+        }
+    ],
+    "noadditionalplugins": "No additional plugins installed.",
+    "downloadaction": "/local/plugindownloader/download.php",
+    "sesskey": "example_sesskey",
+    "downloadselected": "Download Selected"
+    }
+}}
+
+{{#additional_plugins}}
+    <p>Download only available for <b>Contrib/Additional</b> plugins only</p>
+    <form action="{{downloadaction}}" method="post">
+        <div>
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <table class="generaltable">
+                <thead>
+                    <tr>
+                        <th>{{selectplugins}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#plugins}}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="plugins[]" value="{{component}}"> {{name}}
+                        </td>
+                    </tr>
+                {{/plugins}}
+                </tbody>
+            </table>
+            <div>
+                <input type="submit" value="{{downloadselected}}" class="btn btn-primary mt-3">
+            </div>
+        </div>
+    </form>
+    <div id="error-msg" style="color: red; display: none;">{{exceededziplimitmsg}}</div>
+    <script>
+        document.getElementById('pluginform').onsubmit = function(e) {
+            var checkedPlugins = document.querySelectorAll('.plugin-checkbox:checked').length;
+            if (checkedPlugins > {{ziplimit}}) {
+                e.preventDefault();
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        };
+    </script>
+{{/additional_plugins}}
+
+{{^additional_plugins}}
+    <div class="notification notification-info">{{noadditionalplugins}}</div>
+{{/additional_plugins}}
