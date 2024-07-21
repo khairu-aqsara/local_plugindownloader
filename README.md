@@ -1,3 +1,5 @@
+[![Moodle 4.1 4.2 4.3 Compatibility check](https://github.com/khairu-aqsara/local_plugindownloader/actions/workflows/moodle.yml/badge.svg)](https://github.com/khairu-aqsara/local_plugindownloader/actions/workflows/moodle.yml)
+
 # Plugin Downloader for Moodle
 
 ## Overview
